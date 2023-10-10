@@ -1,0 +1,15 @@
+{
+  "name": "lista-de-tareas-node",
+  "version": "1.0.0",
+  "description": "Listas de tareas node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "readline-sync": "^1.4.10"
+  }
+}
