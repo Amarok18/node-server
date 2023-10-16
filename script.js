@@ -8,7 +8,7 @@ const tareas = [];
 let i;
 
 function mostrarMenu() {
-  try{console.log(" ");
+  console.log(" ");
   console.log(chalk.bgGreen("BIENVENIDOS, ¿QUÉ DESEAS REALIZAR?"));
   const opciones = ["Mostrar Tareas", "Agregar Tarea", "Completar Tarea","Eliminar Tareas", "Salir"];
   const index = readlineSync.keyInSelect(opciones, "Elige una opcion",{cancel:"Regresar al menu"});
@@ -30,17 +30,18 @@ function mostrarMenu() {
     case 3:
       eliminarTarea();
       i=3;
+      break;
     case 4:
       i=4;
-      process.exit(0);
-  }}
-  catch(error){
-    console.error(error.message)
+      break;
+    default:
+      console.log("Digite una opcion valida");
+      break;
   }
 }
 
 function mostrarTareas() {
- try{ if (tareas.length <= 0) {
+ if (tareas.length <= 0) {
     console.log("No hay tareas disponibles.");
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
@@ -59,26 +60,20 @@ function mostrarTareas() {
       console.log(`${index + 1}. ${tarea.tarea} [${tarea.estado}]`);
     });
   }
-  }catch(error){
-    console.error(error.message);
-  }
 }
 
 function agregarTarea() {
-  try{const tareaNueva = readlineSync.question("Agrega una tarea: ");
+  const tareaNueva = readlineSync.question("Agrega una tarea: ");
   const nuevaTarea = {
     tarea: tareaNueva,
     estado: "❎"
   }
   tareas.push(nuevaTarea);
   console.log(`Se agregó la tarea: ${nuevaTarea.tarea}`);
-  }catch(error){
-    console.error(error.message);
-  }
 }
 
 function completarTarea() {
-  try{if (tareas.length <= 0) {
+  if (tareas.length <= 0) {
     console.log("No hay tareas para completar.");
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
@@ -103,13 +98,10 @@ function completarTarea() {
       console.log("Numero de tarea inválido.");
     }
   }
-  }catch(error){
-    console.error(error.message);
-  }
 }
 
 function eliminarTarea(){
-    try{if (tareas.length <= 0) {
+    if (tareas.length <= 0) {
     console.log("No hay tareas para eliminar.");
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
@@ -133,9 +125,6 @@ function eliminarTarea(){
     } else {
       console.log("Numero de tarea inválido.");
     }
-  }
-  }catch(error){
-    console.error(error.message);
   }
 }
 
