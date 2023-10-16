@@ -7,7 +7,7 @@ const tareas = [];
 
 let i;
 
-function mostrarMenu() {
+async function mostrarMenu() {
   console.log(" ");
   console.log(chalk.bgGreen("BIENVENIDOS, ¿QUÉ DESEAS REALIZAR?"));
   const opciones = ["Mostrar Tareas", "Agregar Tarea", "Completar Tarea","Eliminar Tareas", "Salir"];
@@ -20,28 +20,28 @@ function mostrarMenu() {
       mostrarTareas();
       break;
     case 1:
-      agregarTarea()
-      .then(()=>{i=1;}).catch(error=>console.log(error));
+      await agregarTarea();
+      i=1;
       break;
     case 2:
-       completarTarea()
-      .then(()=>{i=2;}).catch(error=>console.log(error));
+      await completarTarea()
+      i=2;
       break;
     case 3:
-       eliminarTarea()
-      .then(()=>{i=3;}).catch(error=>console.log(error));
+      await eliminarTarea()
+      i=3;
       break;
     case 4:
       i=4;
       break;
     default:
-      mostrarMenu();
+     await mostrarMenu();
   }
 }
 
 function mostrarTareas() {
   if (tareas.length <= 0) {
-    console.log("No hay tareas disponibles.");
+    console.log(chalk.red("No hay tareas disponibles."));
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
     console.log(`Escogiste ${opciones[index]}`);
@@ -62,32 +62,29 @@ function mostrarTareas() {
   
 }
 
-function agregarTarea() {
- return new Promise((resolve,reject)=>{
+async function agregarTarea() {
   const tareaNueva = readlineSync.question("Agrega una tarea: ");
   const nuevaTarea = {
     tarea: tareaNueva,
     estado: "❎"
   }
   tareas.push(nuevaTarea);
-  console.log(`Se agregó la tarea: ${nuevaTarea.tarea}`);
-  resolve();
- })
+  console.log(chalk.bgBlue(`Se agregó la tarea: ${nuevaTarea.tarea}`));
 }
 
-function completarTarea() {
-  return new Promise((resolve,reject)=>{
+
+async function completarTarea() {
     if (tareas.length <= 0) {
-    console.log("No hay tareas para completar.");
+    console.log(chalk.red("No hay tareas para completar."));
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
     console.log(`Escogiste ${opciones[index]}`);
       switch(index){
         case 0:
-          agregarTarea();
+          await agregarTarea();
         break;
         case 1:
-          mostrarMenu();
+          await mostrarMenu();
         break;
       }
   } else {
@@ -97,30 +94,27 @@ function completarTarea() {
     if (indiceTarea >= 1 && indiceTarea <= tareas.length) {
       const tareaCompletada = tareas[indiceTarea - 1].tarea;
       tareas[indiceTarea-1].estado = '✅'
-      console.log(`Tarea completada: ${tareaCompletada}`);
-      resolve();
+      console.log(chalk.bgBlue(`Tarea completada: ${tareaCompletada}`));
     } else {
       console.log("Numero de tarea inválido.");
-      reject("Numero de tarea inválido.");
     }
   }
-   })
-    
 }
+    
 
-function eliminarTarea(){
-   return new Promise ((resolve,reject)=>{
+
+async function eliminarTarea(){
     if (tareas.length <= 0) {
-    console.log("No hay tareas para eliminar.");
+    console.log(chalk.red("No hay tareas para eliminar."));
     const opciones = [ "Agregar una Tarea","Regresar al menu"];
     const index = readlineSync.keyInSelect(opciones, "Elige una opcion");
     console.log(`Escogiste ${opciones[index]}`);
       switch(index){
         case 0:
-          agregarTarea();
+          await agregarTarea();
         break;
         case 1:
-          mostrarMenu();
+          await mostrarMenu();
         break;
       }
   } else {
@@ -129,15 +123,12 @@ function eliminarTarea(){
     if (indiceTarea >= 1 && indiceTarea <= tareas.length) {
       const tareaEli = tareas[indiceTarea-1].tarea;
       tareas.splice(indiceTarea - 1,1);
-      console.log(`Tarea eliminada: ${tareaEli}`);
-      resolve();
-      mostrarMenu();
+      console.log(chalk.bold(`Tarea eliminada: ${tareaEli}`));
+      await mostrarMenu();
     } else {
-      console.log("Numero de tarea inválido.");
-      reject("Numero de tarea inválido.");
-    }
+      console.log("Numero de tarea inválido.");    
   }
-   })
+   }
 }
 
 do{
